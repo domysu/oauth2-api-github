@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "St233OEB4w5SeYjuTOmabmrZDslDewrmsTepN0KPtFL+7bSB/I6Oc2rSbGNSnbSi9r6GeDpTPptLv64teco+UQ==",
+  "success": true,
+  "projectFilePath": "/home/dominykas-wsl/www/OAuth2/oauth2-api-github/Oauth2Api/Oauth2Api.csproj",
+  "expectedPackageFiles": [
+    "/home/dominykas-wsl/.nuget/packages/microsoft.aspnetcore.openapi/8.0.17/microsoft.aspnetcore.openapi.8.0.17.nupkg.sha512",
+    "/home/dominykas-wsl/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/home/dominykas-wsl/.nuget/packages/microsoft.openapi/1.6.14/microsoft.openapi.1.6.14.nupkg.sha512",
+    "/home/dominykas-wsl/.nuget/packages/swashbuckle.aspnetcore/6.6.2/swashbuckle.aspnetcore.6.6.2.nupkg.sha512",
+    "/home/dominykas-wsl/.nuget/packages/swashbuckle.aspnetcore.swagger/6.6.2/swashbuckle.aspnetcore.swagger.6.6.2.nupkg.sha512",
+    "/home/dominykas-wsl/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.6.2/swashbuckle.aspnetcore.swaggergen.6.6.2.nupkg.sha512",
+    "/home/dominykas-wsl/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.6.2/swashbuckle.aspnetcore.swaggerui.6.6.2.nupkg.sha512"
+  ],
+  "logs": []
+}
