@@ -1,0 +1,99 @@
+@page "/auth/done"
+@model dynamic
+<!doctype html>
+<html lang="lt">
+<head>
+  <meta charset="utf-8" />
+  <title>GitHub profilis</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 40px; background: #f9fafb; color: #111; }
+    h2, h3 { margin-bottom: 0.4em; }
+    pre { background: #f3f4f6; padding: 10px; border-radius: 8px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { background: #fff; margin: 6px 0; padding: 10px 14px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .private { color: #b91c1c; font-weight: 600; }
+    .public { color: #15803d; font-weight: 600; }
+    a { color: #2563eb; text-decoration: none; padding: 5px}
+    #signout { margin-top: 20px; padding: 8px 14px; border: none; border-radius: 8px; background: #dc2626; color: #fff; cursor: pointer; }
+    #signout:hover { background: #b91c1c; }
+  </style>
+</head>
+<body>
+  <h2>Profilis</h2>
+  <div id="profile">Kraunama...</div>
+
+  <a id="signout" href='/signup'>Atsijungti</a>
+
+  <h3>Repozitorijos</h3>
+  <ul id="repos"><li>Kraunama...</li></ul>
+
+  <script>
+    async function fetchProfileAndRepos(token) {
+      try {
+        // 1. Profilis
+        const profileRes = await fetch('/me', {
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        if (!profileRes.ok) throw new Error('Unauthorized');
+        const profileText = await profileRes.text();
+        const profile = JSON.parse(profileText);
+        document.getElementById('profile').innerHTML =
+        
+         `<pre>Name: ${profile.userName}</pre>
+         <pre>Email: ${profile.email}</pre>
+         `;
+
+        // 2. Repo sąrašas
+        const repoRes = await fetch('/repos', {
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        const repos = await repoRes.json();
+        const ul = document.getElementById('repos');
+        ul.innerHTML = '';
+        if (!repos.length) {
+          ul.innerHTML = '<li>Nėra repozitorijų.</li>';
+          return;
+        }
+        for (const r of repos) {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <a href="${r.htmlUrl}" target="_blank">${r.fullName}</a>
+            <span class="${r.private ? 'private' : 'public'}">
+              [${r.private ? 'Private' : 'Public'}]
+            </span><br/>
+            <small>${r.description ?? ''}</small>
+          `;
+          ul.appendChild(li);
+        }
+      } catch {
+        document.getElementById('profile').textContent = 'Nepavyko gauti profilio (atsijungęs?)';
+        document.getElementById('repos').innerHTML = '';
+      }
+    }
+
+    (function init() {
+      // Gauti tokeną iš fragmento
+      const h = new URLSearchParams(location.hash.slice(1));
+      const t = h.get('access_token');
+      if (t) {
+        sessionStorage.setItem('jwt', t);
+        history.replaceState({}, document.title, location.pathname);
+      }
+      const token = sessionStorage.getItem('jwt');
+      if (!token) {
+        document.getElementById('profile').textContent = 'Nepavyko gauti tokeno.';
+        document.getElementById('repos').innerHTML = '';
+        return;
+      }
+      fetchProfileAndRepos(token);
+
+      // Sign out handler
+      document.getElementById('signout').addEventListener('click', () => {
+        sessionStorage.removeItem('jwt');
+        document.getElementById('profile').innerHTML = '<em>Atsijungta.</em>';
+        document.getElementById('repos').innerHTML = '';
+      });
+    })();
+  </script>
+</body>
+</html>
